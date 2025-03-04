@@ -1,5 +1,11 @@
-fn main() {
-    todo!();
+use app::Susie;
+
+pub mod app;
+
+fn main() -> iced::Result {
+    iced::application("A cool counter", Susie::update, Susie::view)
+        .theme(|_| iced::Theme::CatppuccinMocha)
+        .run()
 }
 
 //dynamic linking stuff
