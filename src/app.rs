@@ -19,36 +19,22 @@ fn column_style(theme: &Theme) -> iced::widget::scrollable::Style {
         container: iced::widget::container::Style {
             text_color: Some(theme.palette().text),
             background: None,
-            border: iced::Border::default(),
-            shadow: iced::Shadow {
-                color: iced::Color {
-                    r: 256.0,
-                    g: 246.0,
-                    b: 256.0,
-                    a: 100.0,
-                },
-                offset: iced::Vector { x: 0.0, y: 0.0 },
-                blur_radius: 5.0,
-            },
-        },
-        gap: None,
-        horizontal_rail: scrollable::Rail {
-            background: None,
             border: iced::Border {
-                color: iced::Color {
-                    r: 256.0,
-                    g: 256.0,
-                    b: 256.0,
-                    a: 100.0,
-                },
-                width: 0.0,
+                color: theme.palette().primary,
                 radius: iced::border::Radius {
                     top_left: 0.0,
                     top_right: 0.0,
                     bottom_right: 0.0,
                     bottom_left: 0.0,
                 },
+                width: 1.0,
             },
+            shadow: iced::Shadow::default(),
+        },
+        gap: None,
+        horizontal_rail: scrollable::Rail {
+            background: None,
+            border: iced::Border::default(),
             scroller: scrollable::Scroller {
                 color: iced::Color {
                     r: 256.0,
@@ -77,8 +63,17 @@ fn column_style(theme: &Theme) -> iced::widget::scrollable::Style {
             background: None,
             border: iced::Border::default(),
             scroller: scrollable::Scroller {
-                color: iced::Color::default(),
-                border: iced::Border::default(),
+                color: theme.palette().primary,
+                border: iced::Border {
+                    color: theme.palette().primary,
+                    width: 1.0,
+                    radius: iced::border::Radius {
+                        top_left: 2.0,
+                        top_right: 2.0,
+                        bottom_right: 2.0,
+                        bottom_left: 2.0,
+                    },
+                },
             },
         },
     }
@@ -112,7 +107,8 @@ impl Susie {
                 .width(Length::Fill)]
             .width(Length::FillPortion(7))
             .padding(10),
-        );
+        )
+        .style(|theme, _| column_style(theme));
 
         row![left, right]
             .width(Length::Fill)

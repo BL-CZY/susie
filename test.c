@@ -1,3 +1,3 @@
-double add(double a, double b) { return a + b; }
-//
-double multiply(double a, double b) { return a * b; }
+char *content = "Hello!";
+
+char *get_ui() { return content; }
