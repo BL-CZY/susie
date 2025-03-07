@@ -1,3 +1,3 @@
-char *content = "Hello!";
+char *content = "";
 
 char *get_ui() { return content; }

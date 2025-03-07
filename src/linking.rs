@@ -1,25 +1,29 @@
 use libloading::{Library, Symbol};
 use std::error::Error;
 
+use crate::structs::UIDescriptor;
+
 pub struct Extension {
     _library: Library,
     inner_get_ui: unsafe extern "C" fn() -> *const std::ffi::c_char,
 }
 
 impl Extension {
-    pub fn get_ui(&self) -> Result<String, Box<dyn std::error::Error>> {
-        unsafe {
+    pub fn get_ui(&self) -> Result<Vec<UIDescriptor>, Box<dyn std::error::Error>> {
+        let str = unsafe {
             let chars: *const std::ffi::c_char = (self.inner_get_ui)();
 
             if chars.is_null() {
-                return Ok("".into());
+                return Ok(vec![]);
             }
 
             match std::ffi::CStr::from_ptr(chars).to_str() {
-                Ok(str) => Ok(str.to_owned()),
-                Err(e) => Err(Box::new(e)),
+                Ok(str) => str.to_owned(),
+                Err(e) => return Err(Box::new(e)),
             }
-        }
+        };
+
+        Ok(serde_json::from_str(&str)?)
     }
 }
 
@@ -51,6 +55,6 @@ mod test {
     #[test]
     fn try_func() {
         let ext = Extension::load("/home/tpl/projects/susie/test.so").unwrap();
-        assert_eq!(ext.get_ui().unwrap(), "Hello!".to_string());
+        println!("{:?}", ext.get_ui());
     }
 }
