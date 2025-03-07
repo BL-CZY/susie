@@ -32,10 +32,16 @@ pub enum WidgetType {
 }
 
 #[derive(Clone, Default, Debug, PartialEq, Eq, Deserialize)]
-pub struct UIDescriptor {
+pub struct WidgetDescriptor {
     #[serde(rename = "type")]
     widget_type: WidgetType,
     class: Vec<String>,
     id: String,
-    children: Vec<UIDescriptor>,
+    children: Vec<WidgetDescriptor>,
+}
+
+#[derive(Clone, Default, Debug, PartialEq, Eq, Deserialize)]
+pub struct ExtensionUI {
+    name: String,
+    widgets: Vec<WidgetDescriptor>,
 }

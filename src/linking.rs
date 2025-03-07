@@ -1,11 +1,11 @@
 use libloading::{Library, Symbol};
 use std::error::Error;
 
-use crate::structs::UIDescriptor;
+use crate::structs::ExtensionUI;
 
 pub struct Extension {
     _library: Library,
-    pub ui: Vec<UIDescriptor>,
+    pub ui: Vec<ExtensionUI>,
 }
 
 impl Extension {
