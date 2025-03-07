@@ -1,5 +1,5 @@
 use iced::widget::{button, column, row, scrollable, Row};
-use iced::{Center, Length, Theme};
+use iced::{Center, Length, Task, Theme};
 
 #[derive(Default)]
 pub struct Susie {
@@ -80,7 +80,7 @@ fn column_style(theme: &Theme) -> iced::widget::scrollable::Style {
 }
 
 impl Susie {
-    pub fn update(&mut self, message: Message) {
+    pub fn update(&mut self, message: Message) -> Task<Message> {
         match message {
             Message::Increment => {
                 self.value += 1;
@@ -89,6 +89,8 @@ impl Susie {
                 self.value -= 1;
             }
         }
+
+        Task::none()
     }
 
     pub fn view(&self) -> Row<Message> {
