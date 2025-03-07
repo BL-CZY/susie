@@ -8,6 +8,7 @@ use crate::window::Window;
 #[derive(Default)]
 pub struct Susie {
     windows: BTreeMap<window::Id, Window>,
+    cur_ind: usize,
 }
 
 #[derive(Debug, Clone, Copy)]
@@ -16,6 +17,7 @@ pub enum Message {
     WindowOpened(window::Id),
     WindowClosed(window::Id),
 }
+
 impl Susie {
     pub fn new() -> (Self, Task<Message>) {
         let (_id, open) = window::open(window::Settings::default());
@@ -23,6 +25,7 @@ impl Susie {
         (
             Self {
                 windows: BTreeMap::new(),
+                cur_ind: 0,
             },
             open.map(Message::WindowOpened),
         )

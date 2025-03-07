@@ -1,6 +1,6 @@
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
-#[derive(PartialEq, Eq, Debug, Default, Clone, Deserialize)]
+#[derive(PartialEq, Eq, Debug, Default, Clone, Deserialize, Serialize)]
 pub enum WidgetType {
     #[serde(rename = "button")]
     Button { content: String },
@@ -28,20 +28,21 @@ pub enum WidgetType {
     Input,
 
     #[serde(rename = "list")]
-    List { fields: Vec<String> },
+    List,
 }
 
-#[derive(Clone, Default, Debug, PartialEq, Eq, Deserialize)]
-pub struct WidgetDescriptor {
+#[derive(Clone, Default, Debug, PartialEq, Eq, Deserialize, Serialize)]
+pub struct UIDescriptor {
     #[serde(rename = "type")]
-    widget_type: WidgetType,
-    class: Vec<String>,
-    id: String,
-    children: Vec<WidgetDescriptor>,
+    pub widget_type: WidgetType,
+    pub class: Vec<String>,
+    pub id: String,
+    pub children: Vec<UIDescriptor>,
 }
 
-#[derive(Clone, Default, Debug, PartialEq, Eq, Deserialize)]
+#[derive(Clone, Default, Debug, PartialEq, Eq, Deserialize, Serialize)]
 pub struct ExtensionUI {
-    name: String,
-    widgets: Vec<WidgetDescriptor>,
+    pub name: String,
+    #[serde(rename = "ui")]
+    pub widgets: Vec<UIDescriptor>,
 }

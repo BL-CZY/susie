@@ -8,7 +8,7 @@ pub mod structs;
 pub mod window;
 
 lazy_static::lazy_static! {
-    pub static ref EXT: Extension= Extension::load("/home/tpl/projects/susie/test.so").unwrap();
+    pub static ref EXTS: Vec<Extension> = vec![Extension::load("/home/tpl/projects/susie/test.so").unwrap()];
 }
 
 fn main() -> iced::Result {
