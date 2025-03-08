@@ -5,6 +5,7 @@ use linking::Extension;
 pub mod app;
 pub mod linking;
 pub mod structs;
+pub mod subwindow;
 pub mod window;
 
 lazy_static::lazy_static! {

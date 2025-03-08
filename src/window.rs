@@ -2,6 +2,7 @@ use iced::{
     widget::{button, column, container, row, scrollable},
     Alignment, Element, Length, Theme,
 };
+use smart_default::SmartDefault;
 
 use crate::app::Message;
 
@@ -24,10 +25,14 @@ fn column_style(theme: &Theme) -> iced::widget::container::Style {
     }
 }
 
-pub struct Window {}
+#[derive(SmartDefault)]
+pub struct Window {
+    #[default(_code = "iced::window::Id::unique()")]
+    pub id: iced::window::Id,
+}
 
 impl Window {
-    pub fn view(&self, _id: iced::window::Id) -> Element<Message> {
+    pub fn view(&self) -> Element<Message> {
         let left = container(scrollable(column![button("Hi")
             .width(Length::Fill)
             .on_press(Message::CreateWindow)]))
