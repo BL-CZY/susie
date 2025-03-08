@@ -3,6 +3,7 @@ use std::error::Error;
 
 use crate::structs::ExtensionUI;
 
+#[derive(Debug)]
 pub struct Extension {
     _library: Library,
     pub name: String,

@@ -54,11 +54,13 @@ impl Window {
             push_extensions(&mut left_col_content, ext, ind);
         }
 
-        let left = container(scrollable(Column::from_vec(left_col_content)))
-            .width(Length::FillPortion(7))
-            .height(Length::Fill)
-            .padding(5)
-            .style(|theme| column_style(theme));
+        let left = container(scrollable(
+            Column::from_vec(left_col_content).width(Length::Fill),
+        ))
+        .width(Length::FillPortion(3))
+        .height(Length::Fill)
+        .padding(5)
+        .style(|theme| column_style(theme));
 
         let right = container(scrollable(column![button("Yo")
             .width(Length::Fill)
