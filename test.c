@@ -1,22 +1,39 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
+char *get_name() { return "TestExtension"; }
 
 char *get_ui() {
-  FILE *fptr;
+  FILE *file;
+  char *buffer;
+  long file_size;
 
-  fptr = fopen("test.json", "r");
+  file = fopen("test.json", "r");
 
-  if (!fptr) {
+  if (file == NULL) {
     return "";
   }
 
-  char *content = malloc(100);
+  fseek(file, 0, SEEK_END);
+  file_size = ftell(file);
+  rewind(file);
 
-  fgets(content, 100, fptr);
+  buffer = (char *)malloc(file_size + 1);
+  if (buffer == NULL) {
+    fclose(file);
+    return "";
+  }
 
-  fclose(fptr);
+  size_t result = fread(buffer, 1, file_size, file);
+  if (result != file_size) {
+    free(buffer);
+    fclose(file);
+    return "";
+  }
 
-  fptr = 0;
+  buffer[file_size] = '\0';
 
-  return content;
+  fclose(file);
+  return buffer;
 }

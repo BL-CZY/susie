@@ -10,7 +10,6 @@ use crate::window::Window;
 pub struct Susie {
     main_window: Window,
     windows: BTreeMap<window::Id, SubWindow>,
-    cur_ind: usize,
 }
 
 #[derive(Debug, Clone, Copy)]
@@ -18,6 +17,8 @@ pub enum Message {
     CreateWindow,
     WindowOpened(window::Id),
     WindowClosed(window::Id),
+
+    EntryClicked(usize, usize),
 }
 
 impl Susie {
@@ -26,9 +27,11 @@ impl Susie {
 
         (
             Self {
-                main_window: Window { id },
+                main_window: Window {
+                    id,
+                    ..Default::default()
+                },
                 windows: BTreeMap::new(),
-                cur_ind: 0,
             },
             open.map(Message::WindowOpened),
         )
@@ -79,6 +82,8 @@ impl Susie {
 
                 Task::none()
             }
+
+            Message::EntryClicked(ext_ind, entry_ind) => Task::none(),
         }
     }
 

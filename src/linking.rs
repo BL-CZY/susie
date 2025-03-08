@@ -5,7 +5,21 @@ use crate::structs::ExtensionUI;
 
 pub struct Extension {
     _library: Library,
+    pub name: String,
     pub ui: Vec<ExtensionUI>,
+}
+
+fn chars_to_string(chars: *const std::ffi::c_char) -> Result<String, Box<dyn std::error::Error>> {
+    if chars.is_null() {
+        Ok("".to_string())
+    } else {
+        unsafe {
+            match std::ffi::CStr::from_ptr(chars).to_str() {
+                Ok(str) => Ok(str.to_owned()),
+                Err(e) => Err(Box::new(e)),
+            }
+        }
+    }
 }
 
 impl Extension {
@@ -20,22 +34,17 @@ impl Extension {
             let get_ui: Symbol<unsafe extern "C" fn() -> *const std::ffi::c_char> =
                 library.get(b"get_ui")?;
 
-            let chars: *const std::ffi::c_char = (get_ui)();
+            let json = chars_to_string((get_ui)())?;
 
-            let str = {
-                if chars.is_null() {
-                    "".to_string()
-                } else {
-                    match std::ffi::CStr::from_ptr(chars).to_str() {
-                        Ok(str) => str.to_owned(),
-                        Err(e) => return Err(Box::new(e)),
-                    }
-                }
-            };
+            let get_name: Symbol<unsafe extern "C" fn() -> *const std::ffi::c_char> =
+                library.get(b"get_name")?;
+
+            let name = chars_to_string((get_name)())?;
 
             Ok(Self {
                 _library: library,
-                ui: serde_json::from_str(&str)?,
+                name,
+                ui: serde_json::from_str(&json)?,
             })
         }
     }
